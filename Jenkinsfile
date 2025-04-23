@@ -5,7 +5,7 @@ pipeline{
         DOCKER_PASSWORD = "RJ09GC2017"
         DOCKER_IMAGE = "vishalmahawar5200/23april2025"
         DEPLOY_USER = "root"
-        DEPLOY_HOST = "65.108.149.167"
+        DEPLOY_HOST =" 65.108.149.166"
     }
     stages {
         stage('Install Dependencies') {
