@@ -86,7 +86,7 @@ pipeline {
                         uptime
                         hostname
                         docker ps
-                        EQF
+                        EOF
                      """
                 }
             }
