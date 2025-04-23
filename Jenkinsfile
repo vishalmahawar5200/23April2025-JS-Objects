@@ -2,8 +2,6 @@ pipeline {
     agent any
 
     environment {
-        DOCKER_USERNAME = "vishalmahawar5200"
-        DOCKER_PASSWORD = "RJ09GC2017"
         DOCKER_IMAGE = "vishalmahawar5200/23april2025"
         DEPLOY_USER = "root"
         DEPLOY_HOST = "65.108.149.166"
@@ -38,16 +36,13 @@ pipeline {
                 sh 'docker --version'
             }
         }
-
-        stage('Build Docker Image') {
+        stage('Build Image'){
             steps {
-                sh 'docker build -t vishal:t1 .'
-            }
-        }
-
-        stage('Login to Docker Hub') {
-            steps {
-                sh 'echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin'
+               withCrudentials[userPassword(crudentialsId: "docker-hub-repo", passwordVariable:"Pass", usernameVariable: 'USER')]{
+                    sh  'docker build -t vishal:t1 .'
+                    sh "echo $PASS | docker login -u  $USER --password-stdin"
+                    sh 'docker push vishalmahawar5200/23april2025'
+               }
             }
         }
 
