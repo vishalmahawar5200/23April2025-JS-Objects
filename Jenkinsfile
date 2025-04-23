@@ -36,15 +36,15 @@ pipeline {
                 sh 'docker --version'
             }
         }
-        stage('Build Image'){
-            steps {
-               withCrudentials[userPassword(crudentialsId: "docker-hub-repo", passwordVariable:"Pass", usernameVariable: 'USER')]{
-                    sh  'docker build -t vishal:t1 .'
-                    sh "echo $PASS | docker login -u  $USER --password-stdin"
-                    sh 'docker push vishalmahawar5200/23april2025'
-               }
+        stage('Build Image') {
+            steps{
+                withCredentials([usernamePassword(credentialsId: 'docker-hub-repo', usernameVariable: 'USER', passwordVariable: 'PASS')]){
+                    sh 'docker build -t vishal:t1'
+                    sh 'echo $PASS | docker login -u $USER --password-stdin'
+                }
             }
         }
+
 
         stage('Push Docker Image') {
             steps {
