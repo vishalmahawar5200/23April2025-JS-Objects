@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Car Details</title>
+    </head>
+    <body>
+        <h1 id="abc"></h1>
+        <h1 id="xyz"></h1>
+        <h1 id="def"></h1>
+        <h1 id="ghi"></h1>
+        <h1 id="jkl"></h1>
+        <h1 id="mno"></h1>
+    
+        <script>
+            const myCar = {
+                companyName: "TATA",
+                carName: "HARRIER",
+                color: "Black",
+                manufactureyear: 2024,
+                features: ["Panoramic Sunroof", "Navigation System", "Ventilated Front Seats"],
+                seatingcapacity: 5
+            };
+    
+            console.log(myCar);
+            console.log(myCar.companyName);
+    
+            // object.method()
+            //1. Object.property
+            document.getElementById("abc").innerHTML = myCar.companyName; // this is a object.property
+            document.getElementById("xyz").innerHTML = myCar.carName;  // this is a object.property
+    
+            //2. Object["property"]
+            document.getElementById("def").innerHTML = myCar["color"]; //this is a object["property"]
+            document.getElementById("ghi").innerHTML = myCar["manufactureyear"];  // this is a object["property"]
+
+            //3. Object[expression]
+            let x = "features";
+            document.getElementById("jkl").innerHTML = myCar[x]; //this is a object[expression]
+            let y = "seatingcapacity";
+            document.getElementById("mno").innerHTML = myCar[y]; //this is a object[expression]
+        </script>
+    </body>
+    </html>
