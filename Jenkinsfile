@@ -58,36 +58,5 @@ pipeline {
                 }
             }
         }
-
-        stage('Deploy to Server via Docker') {
-            steps {
-                sshagent (credentials: ['ID_RSA']) {
-                    script {
-                        def imageTag = "v${env.BUILD_NUMBER}"
-                        sh """
-                            ssh -o StrictHostKeyChecking=no $DEPLOY_USER@$DEPLOY_HOST \\
-                            'docker pull $DOCKER_IMAGE:${imageTag} && \\
-                            fuser -k 80/tcp || true && \\
-                            docker stop mysite || true && \\
-                            docker rm mysite || true && \\
-                            docker run -d --name mysite -p 8084:80 $DOCKER_IMAGE:${imageTag}'
-                        """
-                    }
-                }
-            }
-        }
-        stage("Remote SSH Access"){
-            steps{
-               sshagent (credentials: ['ID_RSA']) {
-                sh """
-                    ssh -o StrictHostKeyChecking=no root@65.108.149.166 ' 
-                        echo "You are now connected to the deploy server!";
-                        uptime;
-                        docker ps;
-                    '
-                """
-                }
-            }
-        }
     }
 }
