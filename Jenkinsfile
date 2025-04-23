@@ -78,7 +78,8 @@ pipeline {
         }
         stage("Remote SSH Access"){
             steps{
-               sshagent (credentials: ['root']) {
+               sshagent (credentials: ['ID_RSA']) {
+
 
                      sh """
                         ssh -o StrictHostKeyChecking=no root@65.108.149.166 << EOF
