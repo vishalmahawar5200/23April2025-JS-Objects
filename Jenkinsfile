@@ -79,16 +79,13 @@ pipeline {
         stage("Remote SSH Access"){
             steps{
                sshagent (credentials: ['ID_RSA']) {
-
-
-                     sh """
-                    ssh -o StrictHostKeyChecking=no root@65.108.149.166"
-                        echo 'You are now connected to the deploy server!';
+                sh """
+                    ssh -o StrictHostKeyChecking=no root@65.108.149.166 ' 
+                        echo "You are now connected to the deploy server!";
                         uptime;
                         docker ps;
-                    "
-                    
-                    """
+                    '
+                """
                 }
             }
         }
