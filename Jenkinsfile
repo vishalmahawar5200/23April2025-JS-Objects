@@ -4,6 +4,8 @@ pipeline{
         DOCKER_USERNAME = "vishalmahawar5200"
         DOCKER_PASSWORD = "RJ09GC2017"
         DOCKER_IMAGE = "vishalmahawar5200/23april2025"
+        DEPLOY_USER = "root"
+        DEPLOY_HOST = "65.108.149.167"
     }
     stages {
         stage('Install Dependencies') {
@@ -55,7 +57,27 @@ pipeline{
                     sh "docker push $DOCKER_IMAGE:${imageTag}"
                 }
             }
-        }                       
-    }
+        } 
+
+       stage('Deploy to Server via Docker') {
+            steps {
+                // Use the Jenkins credentials securely
+                sshagent (credentials: ['ID_RSA']) {
+                    script {
+                        def imageTag = "v${env.BUILD_NUMBER}"
+                        sh """
+                            ssh -o StrictHostKeyChecking=no $DEPLOY_USER@$DEPLOY_HOST << EOF
+                                docker pull $DOCKER_IMAGE:${imageTag}
+                                docker stop mysite || true
+                                docker rm mysite || true
+                                docker run -d --name mysite -p 80:80 $DOCKER_IMAGE:${imageTag}
+                            EOF
+                        """
+                    }
+                }
+            }
+        }
+    }                 
 }
+
     
