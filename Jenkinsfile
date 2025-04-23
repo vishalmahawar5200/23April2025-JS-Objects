@@ -58,5 +58,22 @@ pipeline {
                 }
             }
         }
+        stage('Deploy to Go Server') {
+            steps {
+                sshagent (credentials: ['ID_RSA']) {
+                    script {
+                        def imageTag = "v${env.BUILD_NUMBER}"
+                        sh """
+                            ssh -o StrictHostKeyChecking=no $DEPLOY_USER@$DEPLOY_HOST '
+                                echo "Connected to Go Server...";
+                                pwd;
+                                hostname -I;
+                                ls -al;
+                            '
+                        """
+                    }
+                }
+            }
+        }
     }
 }
