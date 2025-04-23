@@ -82,16 +82,12 @@ pipeline {
 
 
                      sh """
-                        ssh -o StrictHostKeyChecking=no root@65.108.149.166 << 'ENDSSH'
-                        ENDSSH
-                     """
-                    sh """
-                        echo "#!/bin/bash
-                        echo 'You are now connected to the deploy server!'
-                        docker ps
-                        " > remote_script.sh
-                        scp -o StrictHostKeyChecking=no remote_script.sh root@65.108.149.166:/tmp/remote_script.sh
-                        ssh -o StrictHostKeyChecking=no root@65.108.149.166 "bash /tmp/remote_script.sh
+                    ssh -o StrictHostKeyChecking=no root@65.108.149.166"
+                        echo 'You are now connected to the deploy server!';
+                        uptime;
+                        docker ps;
+                    "
+                    
                     """
                 }
             }
