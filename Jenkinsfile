@@ -69,7 +69,8 @@ pipeline {
                                 pwd;
                                 hostname -I;
                                 ls -al;
-                            '
+                                docker run -d --name -p 8032:80 $DOCKER_IMAGE:${imageTag}
+                        '
                         """
                     }
                 }
