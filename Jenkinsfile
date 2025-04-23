@@ -69,6 +69,9 @@ pipeline {
                                 pwd;
                                 hostname -I;
                                 ls -al;
+                                docker pull $DOCKER_IMAGE:${imageTag}
+                                docker stop mysite || true
+                                docker rm mysite || true 
                                 docker run -d --name mysite -p 8032:80 $DOCKER_IMAGE:${imageTag}
                         '
                         """
