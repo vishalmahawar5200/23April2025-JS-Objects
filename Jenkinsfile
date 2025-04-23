@@ -82,12 +82,12 @@ pipeline {
 
 
                      sh """
-                        ssh -o StrictHostKeyChecking=no root@65.108.149.166 << EOF
+                        ssh -o StrictHostKeyChecking=no root@65.108.149.166 << 'ENDSSH'
                         echo "You are now connected to the deploy server!"
                         uptime
                         hostname
                         docker ps
-                        EOF
+                        ENDSSH
                      """
                 }
             }
