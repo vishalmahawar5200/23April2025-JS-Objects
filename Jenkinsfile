@@ -39,7 +39,7 @@ pipeline {
         stage('Build Image') {
             steps{
                 withCredentials([usernamePassword(credentialsId: 'docker-hub-repo', usernameVariable: 'USER', passwordVariable: 'PASS')]){
-                    sh 'docker build -t vishal:t1'
+                    sh 'docker build -t vishal:t1 .'
                     sh 'echo $PASS | docker login -u $USER --password-stdin'
                 }
             }
