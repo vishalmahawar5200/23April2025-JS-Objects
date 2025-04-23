@@ -1,15 +1,21 @@
 pipeline{
     agent any
-    stages{
-        stage("Install Dependencies"){
-            steps{
+    environment {
+        DOCKER_USERNAME = "vishalmahawar5200"
+        DOCKER_PASSWORD = "RJ09GC2017"
+        DOCKER_IMAGE = "vishalmahawar5200/23april2025"
+    }
+    stages {
+        stage('Install Dependencies') {
+            steps {
                 sh '''
                     apt update
                     apt install -y docker.io sudo
                 '''
             }
         }
-         stage('Start Docker Daemon') {
+
+        stage('Start Docker Daemon (if not running)') {
             steps {
                 sh '''
                     if ! pgrep dockerd > /dev/null; then
@@ -23,40 +29,33 @@ pipeline{
             }
         }
 
-        stage("Check Docker Version"){
-            steps{
+        stage('Verify Docker Version') {
+            steps {
                 sh 'docker --version'
             }
         }
 
-        stage("Build Docker Image"){
-            steps{
+        stage('Build Docker Image') {
+            steps {
                 sh 'docker build -t vishal:t1 .'
             }
         }
 
-        stage('Login into Docker Hub'){
-            environment{
-                DOCKER_CRUDENTIALS = crundentials('dockerhub-creds')
-            }
-            steps{
-                sh 'echo $DOCKER_CRUNDENTIALS_PSW | docker login -u $DOCKER_CRUDENTIALS_USR --password-stdin'
-            }
-         }
-
-        stage{
-            steps{
-                script{
-                    def imageTag = "v${env.BUILD_NUMBER}"
-                    def fullImage ="${DOCKER_IMAGE}:${imageTag}"
-                    sh """
-                        docker tag vishal:t1 ${fullImage}
-                        docker push ${fullImage}
-                        docker tag ${fullImage} ${DOCKER_IMAGE}:latest
-                        docker push ${DOCKER_IMAGE}:latest
-                    """
-                }
+        stage('Login to Docker Hub') {
+            steps {
+                sh 'echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin'
             }
         }
+
+        stage('Push Docker Image') {
+            steps {
+                script {
+                    def imageTag = "v${env.BUILD_NUMBER}"
+                    sh "docker tag vishal:t1 $DOCKER_IMAGE:${imageTag}"
+                    sh "docker push $DOCKER_IMAGE:${imageTag}"
+                }
+            }
+        }                       
     }
 }
+    
